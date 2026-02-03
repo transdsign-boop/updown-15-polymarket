@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+anthropic
+python-dotenv
+cryptography
+websockets
+ccxt>=4.0
