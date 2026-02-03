@@ -23,27 +23,27 @@ def _decode_pem_if_needed(path_env_var: str, b64_env_var: str) -> str:
         # Use the path from environment
         return os.getenv(path_env_var, "")
 
-# --- Per-environment Kalshi credentials ---
-KALSHI_LIVE_API_KEY_ID = os.getenv("KALSHI_LIVE_API_KEY_ID", "")
-KALSHI_LIVE_PRIVATE_KEY_PATH = _decode_pem_if_needed(
-    "KALSHI_LIVE_PRIVATE_KEY_PATH",
-    "KALSHI_LIVE_PRIVATE_KEY_B64"
+# --- Per-environment Polymarket credentials ---
+POLYMARKET_LIVE_API_KEY_ID = os.getenv("POLYMARKET_LIVE_API_KEY_ID", "")
+POLYMARKET_LIVE_PRIVATE_KEY_PATH = _decode_pem_if_needed(
+    "POLYMARKET_LIVE_PRIVATE_KEY_PATH",
+    "POLYMARKET_LIVE_PRIVATE_KEY_B64"
 )
 
-KALSHI_DEMO_API_KEY_ID = os.getenv("KALSHI_DEMO_API_KEY_ID", "")
-KALSHI_DEMO_PRIVATE_KEY_PATH = _decode_pem_if_needed(
-    "KALSHI_DEMO_PRIVATE_KEY_PATH",
-    "KALSHI_DEMO_PRIVATE_KEY_B64"
+POLYMARKET_DEMO_API_KEY_ID = os.getenv("POLYMARKET_DEMO_API_KEY_ID", "")
+POLYMARKET_DEMO_PRIVATE_KEY_PATH = _decode_pem_if_needed(
+    "POLYMARKET_DEMO_PRIVATE_KEY_PATH",
+    "POLYMARKET_DEMO_PRIVATE_KEY_B64"
 )
 
 # Active environment: "demo" or "live"
-KALSHI_ENV = os.getenv("KALSHI_ENV", "demo")
+POLYMARKET_ENV = os.getenv("POLYMARKET_ENV", "demo")
 
 # Always use live credentials — demo mode is paper trading on the live API
-KALSHI_API_KEY_ID = KALSHI_LIVE_API_KEY_ID
-KALSHI_API_PRIVATE_KEY_PATH = KALSHI_LIVE_PRIVATE_KEY_PATH
+POLYMARKET_API_KEY_ID = POLYMARKET_LIVE_API_KEY_ID
+POLYMARKET_API_PRIVATE_KEY_PATH = POLYMARKET_LIVE_PRIVATE_KEY_PATH
 
-KALSHI_HOST = "https://api.elections.kalshi.com"
+POLYMARKET_HOST = "https://api.polymarket.com"
 
 # --- Anthropic ---
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
@@ -57,7 +57,7 @@ MAX_DAILY_LOSS_PCT = float(os.getenv("MAX_DAILY_LOSS_PCT", "10.0"))    # % of ba
 TRADING_ENABLED = os.getenv("TRADING_ENABLED", "false").lower() == "true"
 
 # Target market series
-MARKET_SERIES = "KXBTC15M"
+MARKET_SERIES = "POLYUPDOWN15M"
 
 # Safety thresholds
 MIN_SECONDS_TO_CLOSE = 90
@@ -191,16 +191,16 @@ def restore_tunables():
 
 
 def switch_env(env: str):
-    """Switch active Kalshi environment and update resolved credentials.
+    """Switch active Polymarket environment and update resolved credentials.
 
-    Both 'demo' (paper) and 'live' use the live Kalshi API.
+    Both 'demo' (paper) and 'live' use the live Polymarket API.
     'demo' mode simulates trades without placing real orders.
     """
     import config as _self
     if env not in ("demo", "live"):
         raise ValueError(f"Invalid env: {env}")
-    _self.KALSHI_ENV = env
+    _self.POLYMARKET_ENV = env
     # Always use live credentials — demo mode is paper trading on the live API
-    _self.KALSHI_API_KEY_ID = _self.KALSHI_LIVE_API_KEY_ID
-    _self.KALSHI_API_PRIVATE_KEY_PATH = _self.KALSHI_LIVE_PRIVATE_KEY_PATH
+    _self.POLYMARKET_API_KEY_ID = _self.POLYMARKET_LIVE_API_KEY_ID
+    _self.POLYMARKET_API_PRIVATE_KEY_PATH = _self.POLYMARKET_LIVE_PRIVATE_KEY_PATH
     return env
